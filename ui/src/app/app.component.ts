@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
+import { AppService } from './api/app.service';
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -19,5 +20,5 @@ export class AppComponent {
     { title: 'Spam', url: '/folder/spam', icon: 'warning' },
   ];
   public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
-  constructor() {}
+  constructor(public app: AppService) {}
 }

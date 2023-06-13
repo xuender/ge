@@ -1,0 +1,10 @@
+syntax = "proto3";
+package pb;
+option go_package = "./pb";
+// Msg TODO: msg.
+message Msg {
+	// Id TODO: Id.
+  uint64 id = 1;
+	// Name TODO: Name.
+  string name = 2;
+}

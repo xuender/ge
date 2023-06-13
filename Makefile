@@ -21,3 +21,20 @@ clean:
 
 build:
 	go build -o dist/ge main.go
+
+proto:
+	protoc --go_out=. pb/*.proto
+
+protojs:
+	cd ui && node_modules/.bin/pbjs -t static-module -w commonjs -o src/pb.js ../pb/*.proto
+	cd ui && node_modules/.bin/pbts -o src/pb.d.ts src/pb.js
+
+build-ui:
+	cd ui && node_modules/@ionic/cli/bin/ionic build --prod
+	echo '' > ui/www/.gitkeep
+
+dev-ui:
+	cd ui && node_modules/@ionic/cli/bin/ionic serve -- --proxy-config proxy.conf.json
+
+dev:
+	go run cmd/ges/main.go -debug
