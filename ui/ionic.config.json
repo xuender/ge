@@ -1,0 +1,7 @@
+{
+  "name": "ge-ui",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
