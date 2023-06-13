@@ -22,11 +22,11 @@ clean:
 build:
 	go build -o dist/ge main.go
 
-proto:
+proto: protojs
 	protoc --go_out=. pb/*.proto
 
 protojs:
-	cd ui && node_modules/.bin/pbjs -t static-module -w commonjs -o src/pb.js ../pb/*.proto
+	cd ui && node_modules/.bin/pbjs -t static-module -w es6 -o src/pb.js ../pb/*.proto
 	cd ui && node_modules/.bin/pbts -o src/pb.d.ts src/pb.js
 
 build-ui:

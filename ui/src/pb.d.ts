@@ -3,14 +3,36 @@ import Long = require("long");
 /** Namespace pb. */
 export namespace pb {
 
+    /** Format enum. */
+    enum Format {
+        err = 0,
+        source = 1,
+        dot = 2,
+        svg = 3,
+        png = 4,
+        jpg = 5
+    }
+
     /** Properties of a Msg. */
     interface IMsg {
 
-        /** Msg id */
-        id?: (number|Long|null);
+        /** Msg format */
+        format?: (pb.Format|null);
 
-        /** Msg name */
-        name?: (string|null);
+        /** Msg dot */
+        dot?: (string|null);
+
+        /** Msg svg */
+        svg?: (string|null);
+
+        /** Msg err */
+        err?: (string|null);
+
+        /** Msg png */
+        png?: (Uint8Array|null);
+
+        /** Msg jpg */
+        jpg?: (Uint8Array|null);
     }
 
     /** Represents a Msg. */
@@ -22,11 +44,23 @@ export namespace pb {
          */
         constructor(properties?: pb.IMsg);
 
-        /** Msg id. */
-        public id: (number|Long);
+        /** Msg format. */
+        public format: pb.Format;
 
-        /** Msg name. */
-        public name: string;
+        /** Msg dot. */
+        public dot: string;
+
+        /** Msg svg. */
+        public svg: string;
+
+        /** Msg err. */
+        public err: string;
+
+        /** Msg png. */
+        public png: Uint8Array;
+
+        /** Msg jpg. */
+        public jpg: Uint8Array;
 
         /**
          * Creates a new Msg instance using the specified properties.

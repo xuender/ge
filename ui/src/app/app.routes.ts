@@ -3,12 +3,16 @@ import { Routes } from '@angular/router';
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'folder/inbox',
+    redirectTo: 'editor',
     pathMatch: 'full',
   },
   {
-    path: 'folder/:id',
+    path: 'editor',
     loadComponent: () =>
-      import('./folder/folder.page').then((m) => m.FolderPage),
+      import('./editor/editor.page').then((m) => m.EditorPage),
+  },
+  {
+    path: 'code',
+    loadComponent: () => import('./code/code.page').then((m) => m.CodePage),
   },
 ];

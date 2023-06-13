@@ -1,10 +1,13 @@
 syntax = "proto3";
 package pb;
 option go_package = "./pb";
-// Msg TODO: msg.
+import "pb/format.proto";
+// Msg ws message.
 message Msg {
-	// Id TODO: Id.
-  uint64 id = 1;
-	// Name TODO: Name.
-  string name = 2;
+	Format format = 1;
+	string dot = 2;
+	string svg = 3;
+	string err = 4;
+	bytes png = 5;
+	bytes jpg = 6;
 }

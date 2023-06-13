@@ -1,0 +1,12 @@
+syntax = "proto3";
+package pb;
+option go_package = "./pb";
+// Format by graphviz.
+enum Format {
+	err = 0;
+	source = 1;
+	dot = 2;
+	svg = 3;
+	png = 4;
+	jpg = 5;
+}
