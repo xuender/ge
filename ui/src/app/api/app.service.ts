@@ -38,7 +38,7 @@ export class AppService {
     }),
     share()
   );
-  dot = `digraph { a -> b }`;
+  dot = `digraph {a -> b}`;
   private _old = '';
   svg = '';
   constructor(

@@ -1,5 +1,7 @@
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { select, zoom } from 'd3';
+import { darkenHex, negateHex, selectAttribute, selectParent } from './color';
+import { getBox, getGraph } from './svg';
 
 @Component({
   selector: 'app-svg',
@@ -13,7 +15,7 @@ export class SvgComponent implements OnInit {
   height = 0;
   @Input()
   width = 0;
-  private g?: d3.Selection<SVGGElement, unknown, null, undefined>;
+  private selection?: d3.Selection<SVGGElement, unknown, null, undefined>;
   private _url = '';
   private _svg = '';
   constructor() {}
@@ -21,35 +23,51 @@ export class SvgComponent implements OnInit {
   get svg() {
     return this._svg;
   }
+
   get url() {
     return this._url;
   }
+
+  private oldElement?: Node;
+  private selectElement?: SVGGElement;
+  private selectID = '';
 
   @Input()
   set svg(data: string) {
     this._svg = data;
 
-    if (!this.g || !data) {
+    if (!this.selection || !data) {
       return;
     }
 
-    this.g.selectChildren().remove();
+    this.selection.selectChildren().remove();
 
-    const image = this.g.append('svg');
+    const image = this.selection.append('g');
+    data = data.replace(/class="node"/g, 'class="node" style="cursor:pointer"');
+    data = data.replace(/class="edge"/g, 'class="edge" style="cursor:pointer"');
+    data = data.replace(/fill="none"/g, 'fill="white"');
+    // console.log(data);
     image.html(data);
+
+    // this.selection.selectAll('.node, .edge').on('click', (e: PointerEvent) => {
+    //   console.log('click', e);
+    //   console.log('id', clickID(e.target));
+    //   // document.querySelector("#node1 ellipse").setAttribute('fill', 'red')
+    // });
+    this.initSelection();
   }
 
   @Input()
   set url(url: string) {
     this._url = url;
 
-    if (!this.g || !url) {
+    if (!this.selection || !url) {
       return;
     }
 
-    this.g.selectChildren().remove();
+    this.selection.selectChildren().remove();
 
-    const image = this.g.append('svg:image');
+    const image = this.selection.append('svg:image');
     image.attr('xlink:href', url);
     image.attr('width', this.width);
     image.attr('height', this.height);
@@ -68,12 +86,12 @@ export class SvgComponent implements OnInit {
       return;
     }
 
-    const el: SVGSVGElement = this.svgElement.nativeElement;
-    const svg = select(el);
-    this.g = svg.append('g');
+    const elem: SVGSVGElement = this.svgElement.nativeElement;
+    const svg = select(elem);
+    this.selection = svg.append('g');
     const svgZoom = zoom().on('zoom', (e) => {
-      if (this.g) {
-        this.g.attr(
+      if (this.selection) {
+        this.selection.attr(
           'transform',
           `translate(${e.transform.x}, ${e.transform.y}) scale(${e.transform.k})`
         );
@@ -81,7 +99,6 @@ export class SvgComponent implements OnInit {
     });
 
     svg.call(svgZoom as any);
-
     if (this._url) {
       this.url = this._url;
     }
@@ -89,5 +106,42 @@ export class SvgComponent implements OnInit {
     if (this._svg) {
       this.svg = this._svg;
     }
+  }
+
+  private click(event: PointerEvent) {
+    const select = selectParent(event.target as HTMLElement, ['edge', 'node']);
+    if (!select) {
+      return;
+    }
+
+    const id = select.id;
+    if (!id || id == this.selectID) {
+      return;
+    }
+    if (this.selectElement && this.oldElement) {
+      const parent = this.selectElement.parentElement;
+      parent?.removeChild(this.selectElement);
+      parent?.appendChild(this.oldElement);
+    }
+
+    const cname = select.getAttribute('class');
+    const gs = getGraph(select as SVGGElement);
+    if (!gs) {
+      return;
+    }
+    this.oldElement = select.cloneNode(true);
+    this.oldElement?.addEventListener('click', (e) =>
+      this.click(e as PointerEvent)
+    );
+    console.log('click id:', id, 'select:', this.selectID, select, cname, gs);
+    this.selectID = id;
+    this.selectElement = select;
+
+    gs.forEach((g) => selectAttribute(g, cname === 'node'));
+  }
+  private initSelection() {
+    this.selection
+      ?.selectAll('.node,.edge')
+      .on('click', (event: PointerEvent) => this.click(event));
   }
 }
