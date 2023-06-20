@@ -84,6 +84,7 @@ func (p *App) OnSay(msg *pb.Msg, conn *websocket.Conn) {
 	}
 
 	defer dot.Close()
+	// node,_:=dot.CreateNode()
 
 	format := pb.Format_name[int32(msg.Format)]
 

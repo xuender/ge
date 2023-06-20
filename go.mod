@@ -6,6 +6,7 @@ replace gitee.com/xuender/gca => ../gca
 
 require (
 	gitee.com/xuender/gca v0.0.0-00010101000000-000000000000
+	github.com/awalterschulze/gographviz v2.0.3+incompatible
 	github.com/gin-gonic/gin v1.9.1
 	github.com/goccy/go-graphviz v0.1.1
 	github.com/gorilla/websocket v1.5.0

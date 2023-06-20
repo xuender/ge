@@ -29,8 +29,6 @@ export const darkenHex = (hex: string | null | undefined) => {
   }
 };
 
-const isHex = (color: string) => color && color[0] === '#';
-
 const attributes = ['fill', 'stroke'];
 export const selectAttribute = (element: Element, isNode = true) => {
   for (const a of attributes) {

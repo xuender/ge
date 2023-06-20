@@ -1,7 +1,7 @@
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { select, zoom } from 'd3';
-import { darkenHex, negateHex, selectAttribute, selectParent } from './color';
-import { getBox, getGraph } from './svg';
+import { selectAttribute, selectParent } from './color';
+import { getGraph } from './svg';
 
 @Component({
   selector: 'app-svg',
